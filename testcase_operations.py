@@ -40,21 +40,31 @@ def act_test(code_path):
     ls_samples = 'ls -l ' + testcase_path
     number_of_samples = Counter(subprocess.run(ls_samples.split(), stdout=subprocess.PIPE, text=True).stdout)['\n']
     OK = "\033[33mOK\033[0m"
-    NG = "\033[31mNG\033[0m"
+    WA = "\033[31mWA\033[0m"
     cnt = 0
     for i in range(1, number_of_samples):
-        collectness, wrong = test_code(code_path, os.path.join(testcase_path, str(i)+".txt"), os.path.join(expectedcase_path, str(i)+".txt"))
+        testcase_in_path = os.path.join(testcase_path, str(i)+".txt")
+        testcase_out_path = os.path.join(expectedcase_path, str(i)+".txt")
+        collectness, wrong = test_code(code_path, testcase_in_path, testcase_out_path)
         if collectness:
-            print(i, OK)
+            print("sample", i, OK)
+            subprocess.run([ "cat", testcase_in_path])
+            print()
+            subprocess.run([ "cat", testcase_out_path])
+            print()
             cnt += 1
         else:
-            print(i, NG)
-            print(wrong.strip())
+            print("sample", i, WA)
+            subprocess.run([ "cat", testcase_in_path])
+            print()
+            subprocess.run([ "cat", testcase_out_path])
+            print()
+            print("wrong answer", wrong.strip())
     print("----------")
     if cnt == number_of_samples-1:
         print(OK, "{}/{}".format(cnt, number_of_samples-1))
     else:
-        print(NG, str(cnt)+"/"+str(number_of_samples-1))
+        print(WA, str(cnt)+"/"+str(number_of_samples-1))
 
 
 

@@ -61,6 +61,10 @@ def make_testcase(code_path):
     subprocess.run(["mkdir", testcase_in_path])
     subprocess.run(["mkdir", testcase_out_path])
     for i in range(number_of_samples):
+        # print("sample", i+1)
+        # print("\n".join(samples[i*2+1]))
+        # print("\n".join(samples[i*2+2]))
+        # print("")
         with open( os.path.join(testcase_in_path, str(i+1)+".txt"), mode='w') as f:
             f.write("\n".join(samples[i*2+1]))
         with open( os.path.join(testcase_out_path, str(i+1)+".txt"), mode='w') as f:
