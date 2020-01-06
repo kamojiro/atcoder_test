@@ -46,7 +46,10 @@ def make_testcase(code_path):
     problem_html = get_problem_html(problem_url)
     problem_lxml = BeautifulSoup(problem_html.text, 'lxml')
     samples = [ a.text.strip().split("\r\n") for a in problem_lxml.find_all('pre')]
-    number_of_samples = len(samples)//4
+    if problem_lxml.find('span', class_="lang-en") == None:
+        number_of_samples = len(samples)//2
+    else:
+        number_of_samples = len(samples)//4
     if number_of_samples == 0:
         print("Login failed or No authentification")
         exit(1)
@@ -57,11 +60,8 @@ def make_testcase(code_path):
     testcase_out_path = os.path.join(testcase_path, "out")
     subprocess.run(["mkdir", testcase_in_path])
     subprocess.run(["mkdir", testcase_out_path])
-
-
     for i in range(number_of_samples):
         with open( os.path.join(testcase_in_path, str(i+1)+".txt"), mode='w') as f:
             f.write("\n".join(samples[i*2+1]))
         with open( os.path.join(testcase_out_path, str(i+1)+".txt"), mode='w') as f:
             f.write("\n".join(samples[i*2+2]))
-
