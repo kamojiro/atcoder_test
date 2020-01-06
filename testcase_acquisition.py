@@ -32,13 +32,6 @@ def get_problem_html(problem_url):
 
 
 def make_testcase(code_path):
-    testcase_path = os.path.join("testcase", code_path[0])
-    subprocess.run(["mkdir", testcase_path])
-    testcase_in_path = os.path.join(testcase_path, "in")
-    testcase_out_path = os.path.join(testcase_path, "out")
-    subprocess.run(["mkdir", testcase_in_path])
-    subprocess.run(["mkdir", testcase_out_path])
-
     d = defaultdict(lambda : "")
     d["beginner"] = "abc"
     d["regular"] = "arc"
@@ -57,6 +50,15 @@ def make_testcase(code_path):
     if number_of_samples == 0:
         print("Login failed or No authentification")
         exit(1)
+
+    testcase_path = os.path.join("testcase", code_path[0])
+    subprocess.run(["mkdir", testcase_path])
+    testcase_in_path = os.path.join(testcase_path, "in")
+    testcase_out_path = os.path.join(testcase_path, "out")
+    subprocess.run(["mkdir", testcase_in_path])
+    subprocess.run(["mkdir", testcase_out_path])
+
+
     for i in range(number_of_samples):
         with open( os.path.join(testcase_in_path, str(i+1)+".txt"), mode='w') as f:
             f.write("\n".join(samples[i*2+1]))
